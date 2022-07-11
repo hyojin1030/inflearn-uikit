@@ -23,6 +23,7 @@ class DelegateDetailViewController: UIViewController {
 
     @IBAction func passDataToMainVC(_ sender: Any) {
         delegate?.passString(string: "delegate pass Data")
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
