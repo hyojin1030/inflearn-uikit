@@ -39,7 +39,9 @@ class ViewController: UIViewController {
         let queue2 = DispatchQueue(label: "q2")
         let queue3 = DispatchQueue(label: "q3")
     
-        queue1.async(group: dispatchGroup) {
+        
+        //qos - 우선순위
+        queue1.async(group: dispatchGroup, qos: .background) {
             dispatchGroup.enter()
             DispatchQueue.global().async {
                 for index in 0..<10 {
@@ -50,7 +52,7 @@ class ViewController: UIViewController {
             }
         }
         
-        queue2.async(group: dispatchGroup) {
+        queue2.async(group: dispatchGroup, qos: .userInteractive) {
             dispatchGroup.enter()
             DispatchQueue.global().async {
                 for index in 10..<20 {
@@ -79,6 +81,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func action3(_ sender: Any) {
+        
+        // deadlock
+//        DispatchQueue.main.sync {
+//            print("main sync")
+//        }
+        
         let queue1 = DispatchQueue(label: "q1")
         let queue2 = DispatchQueue(label: "q2")
     
@@ -104,6 +112,8 @@ class ViewController: UIViewController {
                 print(index)
             }
         }
+        
+        print("aaaa")
     
         
         
