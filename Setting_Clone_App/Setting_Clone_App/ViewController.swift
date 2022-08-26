@@ -29,10 +29,14 @@ class MainController: UIViewController {
         
         settingTableView.delegate = self
         settingTableView.dataSource = self
-        
+        settingTableView.backgroundColor = UIColor(white: 245/255, alpha: 1)
         settingTableView.register(UINib(nibName: "ProfileCell", bundle: nil), forCellReuseIdentifier: "ProfileCell")
         settingTableView.register(UINib(nibName: "MenuCell", bundle: nil), forCellReuseIdentifier: "MenuCell")
     
+        title = "Settings"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        self.view.backgroundColor = UIColor(white: 245/255, alpha: 1)
+        
         makeData()
     }
 
@@ -66,6 +70,7 @@ extension MainController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuCell", for: indexPath) as! MenuCell
         
         cell.leftImageView.image = UIImage(systemName: settingModel[indexPath.section][indexPath.row].leftImageName)
+        cell.leftImageView.tintColor = .red
         cell.rightImageView.image = UIImage(systemName: settingModel[indexPath.section][indexPath.row].rightImageName ?? "")
         cell.middleTitle.text = settingModel[indexPath.section][indexPath.row].menuTitle
         

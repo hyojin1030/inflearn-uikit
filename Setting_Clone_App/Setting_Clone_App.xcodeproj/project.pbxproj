@@ -18,6 +18,8 @@
 		03B4E41528B4BA500060AAF3 /* MenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B4E41328B4BA500060AAF3 /* MenuCell.swift */; };
 		03B4E41628B4BA500060AAF3 /* MenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B4E41428B4BA500060AAF3 /* MenuCell.xib */; };
 		03B4E41828B4C0A90060AAF3 /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B4E41728B4C0A90060AAF3 /* SettingModel.swift */; };
+		03EBB86D28B8985100D77B38 /* GeneralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EBB86C28B8985100D77B38 /* GeneralViewController.swift */; };
+		03EBB86F28B8987500D77B38 /* GeneralViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03EBB86E28B8987500D77B38 /* GeneralViewController.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		03B4E41328B4BA500060AAF3 /* MenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCell.swift; sourceTree = "<group>"; };
 		03B4E41428B4BA500060AAF3 /* MenuCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuCell.xib; sourceTree = "<group>"; };
 		03B4E41728B4C0A90060AAF3 /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
+		03EBB86C28B8985100D77B38 /* GeneralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralViewController.swift; sourceTree = "<group>"; };
+		03EBB86E28B8987500D77B38 /* GeneralViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = GeneralViewController.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,8 @@
 				031E0D1328A4DFCE00A994E7 /* SceneDelegate.swift */,
 				031E0D1528A4DFCE00A994E7 /* ViewController.swift */,
 				031E0D1728A4DFCE00A994E7 /* Main.storyboard */,
+				03EBB86C28B8985100D77B38 /* GeneralViewController.swift */,
+				03EBB86E28B8987500D77B38 /* GeneralViewController.storyboard */,
 				031E0D2528A4F57600A994E7 /* ProfileCell.swift */,
 				031E0D2628A4F57600A994E7 /* ProfileCell.xib */,
 				03B4E41328B4BA500060AAF3 /* MenuCell.swift */,
@@ -140,6 +146,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03EBB86F28B8987500D77B38 /* GeneralViewController.storyboard in Resources */,
 				031E0D1E28A4DFCF00A994E7 /* LaunchScreen.storyboard in Resources */,
 				031E0D2828A4F57600A994E7 /* ProfileCell.xib in Resources */,
 				03B4E41628B4BA500060AAF3 /* MenuCell.xib in Resources */,
@@ -156,6 +163,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				031E0D1628A4DFCE00A994E7 /* ViewController.swift in Sources */,
+				03EBB86D28B8985100D77B38 /* GeneralViewController.swift in Sources */,
 				03B4E41528B4BA500060AAF3 /* MenuCell.swift in Sources */,
 				03B4E41828B4C0A90060AAF3 /* SettingModel.swift in Sources */,
 				031E0D2728A4F57600A994E7 /* ProfileCell.swift in Sources */,
