@@ -34,12 +34,15 @@ class MainController: UIViewController {
         settingTableView.register(UINib(nibName: "MenuCell", bundle: nil), forCellReuseIdentifier: "MenuCell")
     
         title = "Settings"
-        navigationController?.navigationBar.prefersLargeTitles = true
         self.view.backgroundColor = UIColor(white: 245/255, alpha: 1)
         
         makeData()
     }
 
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
 
 }
 
@@ -50,6 +53,24 @@ extension MainController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return settingModel.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.section == 0 && indexPath.row == 0 {
+            let myidVC = MyIDViewController(nibName: "MyIDViewController", bundle: nil)
+            
+            self.present(myidVC, animated: true)
+        }
+        
+        else if indexPath.section == 1 && indexPath.row == 0 {
+            if let generalVC = UIStoryboard(name: "GeneralViewController", bundle: nil).instantiateViewController(identifier: "GeneralViewController") as? GeneralViewController {
+                self.navigationController?.pushViewController(generalVC, animated: true)
+            }
+                        
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
