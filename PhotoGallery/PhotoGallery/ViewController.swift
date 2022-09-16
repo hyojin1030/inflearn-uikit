@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var photoCollectionView: UICollectionView!
     
     var images = [UIImage?]()
+    var fetchResults: PHFetchResult<PHAsset>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,7 +84,7 @@ class ViewController: UIViewController {
     }
     
     @objc func refresh() {
-        
+        self.photoCollectionView.reloadData()
     }
 
 
@@ -91,12 +92,15 @@ class ViewController: UIViewController {
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return self.fetchResults?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         
+        if let asset = self.fetchResults?[indexPath.row] {
+            cell.loadImage(asset: asset)
+        }
         
         return cell
     }
@@ -110,19 +114,11 @@ extension ViewController: PHPickerViewControllerDelegate {
         
         let identifiers = results.map{
             $0.assetIdentifier ?? ""
-            
         }
-        let fetchAssets = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
         
-        fetchAssets.enumerateObjects { asset, index, stop in
-            let imageManager = PHImageManager()
-            let scale = UIScreen.main.scale
-            let imageSize = CGSize(width: 150 * scale, height: 150 * scale)
-            
-            imageManager.requestImage(for: asset, targetSize: imageSize, contentMode: .aspectFill, options: nil) { image, info in
-                self.images.append(image)
-            }
-        }
+        self.fetchResults = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+        
+        self.photoCollectionView.reloadData()
         
         self.dismiss(animated: true, completion: nil)
     }
