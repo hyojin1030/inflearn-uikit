@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var movieTableView: UITableView!
     
     var movieModel: MovieModel?
+    var term = ""
+    var networkAPI = NetworkAPI()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,65 +25,36 @@ class ViewController: UIViewController {
     }
     
     func loadImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
-        let sessionConfig = URLSessionConfiguration.default
-        let session = URLSession(configuration: sessionConfig)
-        
-        if let hasURL = URL(string: urlString) {
-            var reqeust = URLRequest(url: hasURL)
-            reqeust.httpMethod = "GET"
-            
-            session.dataTask(with: reqeust) { data, response, error in
-                print((response as! HTTPURLResponse).statusCode)
-                
-                if let hasData = data {
-                    completion(UIImage(data: hasData))
-                    return
-                }
+        networkAPI.request(type: .justURL(urlString: urlString)) { data, response, error in
+            if let hasData = data {
+                completion(UIImage(data: hasData))
+                return
             }
+            
+            completion(nil)
         }
-        
-        completion(nil)
     }
     
     //network
     func requestMovieAPI() {
-        let sessionConfig = URLSessionConfiguration.default
-        let session = URLSession(configuration: sessionConfig)
-        
-        var components = URLComponents(string: "https://itunes.apple.com/search")
-        let term = URLQueryItem(name: "term", value: "marvel")
+        let term = URLQueryItem(name: "term", value: term)
         let media = URLQueryItem(name: "media", value: "movie")
+        let querys = [term, media]
         
-        components?.queryItems = [term, media]
-        
-        guard let url = components?.url else {
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let task = session.dataTask(with: request) { data, response, error in
-            print((response as! HTTPURLResponse).statusCode)
-            
+        networkAPI.request(type: .searchMovie(querys: querys)) { data, response, error in
             if let hasData = data {
                 do {
                     self.movieModel = try JSONDecoder().decode(MovieModel.self, from: hasData)
-                    print(self.movieModel ?? "no data")
                     
                     DispatchQueue.main.async {
                         self.movieTableView.reloadData()
                     }
+                    
                 } catch {
                     print(error)
                 }
             }
-            
-
         }
-        
-        task.resume()
-        session.finishTasksAndInvalidate()
         
     }
 }
@@ -90,6 +63,10 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return movieModel?.results.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -105,23 +82,50 @@ extension ViewController : UITableViewDelegate, UITableViewDataSource {
         
         if let hasUrl = self.movieModel?.results[indexPath.row].image {
             loadImage(urlString: hasUrl) { image in
-                cell.movieImageView.image = image
+                DispatchQueue.main.async {
+                    cell.movieImageView.image = image
+
+                }
             }
 
         }
 
-        
+        if let dateString = self.movieModel?.results[indexPath.row].releaseDate {
+            let formatter = ISO8601DateFormatter()
+            if let isoDate = formatter.date(from: dateString) {
+                let myFormatter = DateFormatter()
+                myFormatter.dateFormat = "yyyy년 MM월 dd일"
+                let dateString = myFormatter.string(from: isoDate)
+                
+                cell.dateLabel.text = dateString
+            }
+            
+            
+        }
         
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailVC = UIStoryboard(name: "DetailViewController", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        detailVC.movieResult = self.movieModel?.results[indexPath.row]
+        //detailVC.modalPresentationStyle = .fullScreen
+        self.present(detailVC, animated: true, completion: nil)
+    }
 }
 
 
 extension ViewController : UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
+        guard let hasText = searchBar.text else {
+            return
+        }
+        term = hasText
+        requestMovieAPI()
+        self.view.endEditing(true)
     }
 }
 
