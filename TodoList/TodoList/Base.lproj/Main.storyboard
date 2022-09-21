@@ -62,7 +62,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="dataLabel" destination="Kza-9y-xTI" id="i0t-yh-4yJ"/>
-                                            <outlet property="prioirtyView" destination="7Vf-np-94o" id="EjC-s6-4cK"/>
                                             <outlet property="priorityView" destination="7Vf-np-94o" id="njB-is-xnY"/>
                                             <outlet property="topTitleLabel" destination="wBN-yS-dWX" id="lSk-Ig-hah"/>
                                         </connections>
